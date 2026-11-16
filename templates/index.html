@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A complete beginner-friendly English learning classroom with lessons, examples, quizzes and progress tracking." />
+  <title>FluentPath — English Learning Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='upgrade.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='flask-overrides.css') }}">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" data-view="dashboard">
+        <span class="brand-mark">F</span>
+        <span><b>FluentPath</b><small>ENGLISH STUDIO</small></span>
+      </a>
+      <div class="side-label">LEARN</div>
+      <nav class="nav-list">
+        <button class="nav-link active" data-view="dashboard"><span>⌂</span> Dashboard</button>
+        <button class="nav-link" data-view="lessons"><span>▤</span> All lessons <em>24</em></button>
+        <button class="nav-link" data-view="practice"><span>✎</span> Practice zone</button>
+        <button class="nav-link" data-view="vocabulary"><span>Aa</span> Vocabulary</button>
+        <button class="nav-link" data-view="flashcards"><span>▣</span> Flashcards</button>
+      </nav>
+      <div class="side-label side-label-spaced">YOUR SPACE</div>
+      <nav class="nav-list">
+        <button class="nav-link" data-view="progress"><span>◷</span> My progress</button>
+        <button class="nav-link" data-view="study-plan"><span>☷</span> Study plan</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="streak-card"><div class="streak-icon">🔥</div><div><b id="streakCount">0 day streak</b><small>Keep your momentum!</small></div></div>
+        <div class="profile-mini"><div class="avatar">N</div><div><b>My learning space</b><small>Beginner · Level 1</small></div><span class="more">•••</span></div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="mobile-menu" id="menuBtn" aria-label="Open menu">☰</button>
+        <div class="breadcrumb">Learning space <span>/</span> <b id="crumb">Dashboard</b></div>
+        <div class="fp-account"><span>Hi, {{ current_user }}</span>{% if is_admin %}<a href="{{ url_for('admin') }}">Admin</a>{% endif %}<a href="{{ url_for('logout') }}">Logout</a></div>
+        <div class="top-actions">
+          <div class="level-pill"><span>✦</span> Level <b id="levelValue">1</b></div>
+          <button class="icon-button" id="themeBtn" title="Toggle theme">◐</button>
+        </div>
+      </header>
+
+      <section class="view active" id="view-dashboard">
+        <div class="welcome-row">
+          <div><div class="eyebrow">SUNDAY, NOVEMBER 15 · YOUR ENGLISH JOURNEY</div><h1>Small steps. <span class="gradient-text">Fluent English.</span></h1><p class="muted">Learn a little every day. Understand the rules, see real examples, and practise until it feels natural.</p></div>
+          <div class="welcome-art"><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div><div class="book-art">A<span>あ</span></div><div class="spark s1">✦</div><div class="spark s2">✧</div></div>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-icon purple">▤</div><div class="stat-label">Lessons completed</div><div class="stat-number"><span id="lessonsDone">0</span><small> / 24</small></div><div class="mini-progress"><i id="lessonProgress"></i></div></article>
+          <article class="stat-card"><div class="stat-icon orange">⚡</div><div class="stat-label">Practice points</div><div class="stat-number" id="pointsValue">0</div><div class="stat-foot">Earn points by answering correctly</div></article>
+          <article class="stat-card"><div class="stat-icon green">✓</div><div class="stat-label">Accuracy</div><div class="stat-number"><span id="accuracyValue">—</span></div><div class="stat-foot">Based on your attempts</div></article>
+          <article class="stat-card"><div class="stat-icon blue">◷</div><div class="stat-label">Study streak</div><div class="stat-number"><span id="streakValue">0</span><small> days</small></div><div class="stat-foot">One focused session a day</div></article>
+        </div>
+        <div class="content-grid">
+          <div class="primary-column">
+            <div class="section-heading"><div><div class="eyebrow">PICK UP WHERE YOU LEFT OFF</div><h2>Continue learning</h2></div><button class="text-button" data-go="lessons">View all lessons →</button></div>
+            <article class="continue-card">
+              <div class="continue-symbol">Aa</div><div class="continue-info"><span class="tag tag-purple">GRAMMAR · FOUNDATION</span><h3>Parts of Speech</h3><p>Understand how words work together to make meaningful sentences.</p><div class="card-meta"><span>◷ 12 min</span><span>•</span><span>Beginner</span></div></div>
+              <button class="primary-button" data-lesson="parts-of-speech">Start lesson <span>→</span></button>
+            </article>
+            <div class="section-heading section-gap"><div><div class="eyebrow">YOUR LEARNING PATH</div><h2>Explore categories</h2></div></div>
+            <div class="category-grid">
+              <button class="category-card" data-category="Grammar"><span class="category-icon lavender">Aa</span><b>Grammar</b><small>Rules that build clear sentences</small><span class="category-arrow">↗</span></button>
+              <button class="category-card" data-category="Tenses"><span class="category-icon peach">◷</span><b>Tenses</b><small>Talk about past, present & future</small><span class="category-arrow">↗</span></button>
+              <button class="category-card" data-category="Vocabulary"><span class="category-icon mint">✧</span><b>Vocabulary</b><small>Grow your everyday word bank</small><span class="category-arrow">↗</span></button>
+              <button class="category-card" data-category="Communication"><span class="category-icon sky">☏</span><b>Communication</b><small>Speak and write with confidence</small><span class="category-arrow">↗</span></button>
+            </div>
+          </div>
+          <aside class="right-column">
+            <article class="daily-card"><div class="daily-top"><span class="tag tag-orange">DAILY CHALLENGE</span><span>✦ +20 XP</span></div><h3>Can you choose the correct sentence?</h3><p>Test what you know with a quick question.</p><div class="daily-question">She _____ to college every day.</div><div class="daily-options"><button class="daily-option" data-daily="go">go</button><button class="daily-option" data-daily="goes">goes</button><button class="daily-option" data-daily="going">going</button></div><div id="dailyFeedback" class="feedback-line"></div></article>
+            <article class="tip-card"><div class="tip-icon">💡</div><div><span class="eyebrow">TODAY'S TIP</span><h3>Think in English</h3><p>Describe small things around you in simple English. For example: “I am opening the door.”</p></div></article>
+            <article class="week-card"><div class="section-heading"><h3>This week's activity</h3><span class="muted tiny">Last 7 days</span></div><div class="week-bars"><div><i style="height:38%"></i><small>M</small></div><div><i style="height:62%"></i><small>T</small></div><div><i style="height:48%"></i><small>W</small></div><div><i style="height:82%"></i><small>T</small></div><div><i style="height:56%"></i><small>F</small></div><div><i style="height:20%"></i><small>S</small></div><div><i class="today-bar" style="height:8%"></i><small>S</small></div></div></article>
+          </aside>
+        </div>
+      </section>
+
+      <section class="view" id="view-lessons">
+        <div class="page-heading"><div><div class="eyebrow">THE COMPLETE LEARNING PATH</div><h1>All lessons</h1><p class="muted">Go in order or choose a topic you want to understand today.</p></div><div class="search-wrap"><span>⌕</span><input id="lessonSearch" placeholder="Search lessons..." /></div></div>
+        <div class="filter-row" id="lessonFilters"><button class="filter-chip selected" data-filter="All">All topics</button><button class="filter-chip" data-filter="Grammar">Grammar</button><button class="filter-chip" data-filter="Tenses">Tenses</button><button class="filter-chip" data-filter="Vocabulary">Vocabulary</button><button class="filter-chip" data-filter="Communication">Communication</button></div>
+        <div class="lesson-grid" id="lessonGrid"></div>
+      </section>
+
+      <section class="view" id="view-lesson">
+        <button class="back-link" data-view="lessons">← Back to lessons</button>
+        <div id="lessonContent"></div>
+      </section>
+
+      <section class="view" id="view-practice">
+        <div class="page-heading"><div><div class="eyebrow">LEARN BY DOING</div><h1>Practice zone</h1><p class="muted">Answer the question, check your result, and read why the answer is correct.</p></div><div class="practice-score"><span>✦</span><b id="practicePoints">0</b><small>XP earned</small></div></div>
+        <div class="practice-layout"><div class="practice-main"><div class="quiz-topline"><span class="tag tag-purple" id="quizCategory">MIXED PRACTICE</span><span id="questionCounter">Question 1 of 10</span></div><div class="quiz-progress"><i id="quizProgress"></i></div><div id="questionArea"></div><div class="quiz-controls"><button class="secondary-button" id="skipQuestion">Skip for now</button><button class="primary-button" id="checkAnswer">Check answer <span>→</span></button></div><div id="answerFeedback" class="answer-feedback"></div></div><aside class="practice-side"><div class="side-illustration">✎</div><h3>Practice makes progress.</h3><p>Don't worry about mistakes. Every incorrect answer is a chance to learn something new.</p><div class="practice-rule"><b>How it works</b><p>1. Read the question carefully.</p><p>2. Choose or write your answer.</p><p>3. Check it and study the explanation.</p></div></aside></div>
+      </section>
+
+      <section class="view" id="view-vocabulary">
+        <div class="page-heading"><div><div class="eyebrow">WORDS FOR EVERYDAY LIFE</div><h1>Vocabulary builder</h1><p class="muted">Learn useful words with simple meanings, examples, and Gujarati translations.</p></div><div class="search-wrap"><span>⌕</span><input id="vocabSearch" placeholder="Find a word..." /></div></div>
+        <div class="vocab-summary"><div><b id="wordCount">0</b><small>Words to explore</small></div><div><b>Beginner</b><small>Current collection</small></div><div><b>English + ગુજરાતી</b><small>Learn both meanings</small></div></div>
+        <div class="vocab-grid" id="vocabGrid"></div>
+      </section>
+
+      <section class="view" id="view-flashcards">
+        <div class="page-heading"><div><div class="eyebrow">QUICK DAILY REVISION</div><h1>Flashcards</h1><p class="muted">Try to remember the meaning before you flip the card.</p></div></div>
+        <div class="flashcard-stage"><div class="flashcard" id="flashcard"><div class="flashcard-label">WORD CARD · <span id="flashIndex">1 / 12</span></div><div class="flash-word" id="flashWord">Improve</div><div class="flash-hint">Think of the meaning, then flip</div><div class="flash-answer" id="flashAnswer"><b>સુધારવું</b><p>To make something better.</p><i>“I want to improve my English.”</i></div><button class="secondary-button" id="flipCard">Reveal meaning</button></div><div class="flash-controls"><button class="round-button" id="prevCard">←</button><button class="secondary-button" id="knownCard">I know this word ✓</button><button class="round-button" id="nextCard">→</button></div></div>
+      </section>
+
+      <section class="view" id="view-progress">
+        <div class="page-heading"><div><div class="eyebrow">YOUR PERSONAL REPORT</div><h1>My progress</h1><p class="muted">See how your English learning is moving forward.</p></div></div>
+        <div class="stats-grid progress-stats"><article class="stat-card"><div class="stat-label">Total XP</div><div class="stat-number" id="progressXP">0</div><div class="stat-foot">Keep practising to earn more</div></article><article class="stat-card"><div class="stat-label">Questions attempted</div><div class="stat-number" id="attemptsValue">0</div><div class="stat-foot">Every attempt counts</div></article><article class="stat-card"><div class="stat-label">Correct answers</div><div class="stat-number" id="correctValue">0</div><div class="stat-foot">Knowledge in action</div></article><article class="stat-card"><div class="stat-label">Lessons finished</div><div class="stat-number" id="progressLessons">0</div><div class="stat-foot">Build your foundation</div></article></div>
+        <div class="progress-panel"><div><h2>Learning milestones</h2><p class="muted">Your next steps on the FluentPath journey.</p></div><div id="milestones"></div><button class="secondary-button danger-button" id="resetProgress">Reset all progress</button></div>
+      </section>
+
+      <section class="view" id="view-study-plan">
+        <div class="page-heading"><div><div class="eyebrow">A LITTLE EVERY DAY</div><h1>Your 30-day study plan</h1><p class="muted">A balanced path from basic English to confident everyday communication.</p></div></div>
+        <div class="plan-banner"><div><span class="tag tag-purple">SUGGESTED ROUTINE</span><h2>30 minutes a day is enough to begin.</h2><p>Try 10 minutes of learning, 10 minutes of practice, and 10 minutes of speaking or writing.</p></div><div class="plan-clock">30<span>MIN</span></div></div>
+        <div class="plan-list" id="planList"></div>
+      </section>
+
+      <footer class="footer"><span>FluentPath English Studio</span><span>Learn · Practise · Improve</span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script src="{{ url_for('static', filename='verbs-data.js') }}"></script>
+  <script src="{{ url_for('static', filename='upgrade.js') }}"></script>
+<script src="{{ url_for('static', filename='account-sync.js') }}"></script>
+</body>
+</html>
